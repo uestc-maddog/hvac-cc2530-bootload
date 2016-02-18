@@ -302,6 +302,7 @@
         </option>
         <option>
           <name>CCDefines</name>
+          <state>HAL_KEY=FALSE</state>
           <state>HAL_SB_BOOT_CODE</state>
           <state>HAL_UART=TRUE</state>
           <state>HAL_UART_DMA=0</state>
