@@ -149,18 +149,28 @@ void main(void)
   // to write anything to flash.
   sblInit();
   
+  // if a valid image exist
   if (sbImgValid())
   {
+    // if (delay set as null) or (previous reset is a WTD reset)
     if ((SB_UART_DELAY == 0) || ResetWasWatchDog)
     {
+      // goes into system
       sblJump();
     }
 
+    // otherwise, make the decision whether execute SBL mode
+    // 1. Receiving SB_FORCE_BOOT/SB_FORCE_RUN command from UART
+    // 2. SB1_PRESS - SBL execute
+    // 3. SB2_PRESS - RUN system
     sblWait();
   }
 
+  // if the code goes here, SBL will execute soon
   vddWait(VDD_MIN_NV);
+  // execute
   sblExec();
+  // reset after programme receiving
   HAL_SYSTEM_RESET();
 }
 

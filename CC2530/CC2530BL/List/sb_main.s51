@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR C/C++ Compiler V9.30.1.3056 for 8051               18/Feb/2016  11:01:33
+// IAR C/C++ Compiler V9.30.1.3056 for 8051               18/Feb/2016  12:02:32
 // Copyright 2004-2015 IAR Systems AB.
 // Standalone license - IAR Embedded Workbench for 8051
 //
@@ -594,83 +594,84 @@ P2DIR:
 //   52 #include "sb_exec.h"
 //   53 #include "sb_main.h"
 //   54 
-//   55 /* ------------------------------------------------------------------------------------------------
-//   56  *                                          Constants
-//   57  * ------------------------------------------------------------------------------------------------
-//   58  */
-//   59 
-//   60 /* Delay jump to valid RC code, waiting for a force boot or force run indication via the
-//   61  * physical transport or button press indication. Set to zero to jump immediately, this
-//   62  * necessitates the RC to invalidate checksum/shadow to force boot mode.
-//   63  */
-//   64 #if !defined SB_UART_DELAY
-//   65 #define SB_UART_DELAY  0x260000  // About 1 minute.
-//   66 #endif
-//   67 
-//   68 /* ------------------------------------------------------------------------------------------------
-//   69  *                                           Macros
-//   70  * ------------------------------------------------------------------------------------------------
-//   71  */
-//   72 
-//   73 #if HAL_KEY
-//   74 #define SB1_PRESS  (P0_1 != 0)
-//   75 #define SB2_PRESS  (P2_0 != 0)
-//   76 #else
-//   77 #define SB1_PRESS   0
-//   78 #define SB2_PRESS   0
-//   79 #endif
-//   80 
-//   81 #if HAL_LED
-//   82 #define SB_INIT_LEDS() st (  \ 
-//   83   HAL_TURN_OFF_LED1();  \ 
-//   84   LED1_DDR |= LED1_BV;  \ 
-//   85   HAL_TURN_OFF_LED2();  \ 
-//   86   LED2_DDR |= LED2_BV;  \ 
-//   87 )
-//   88 #define SB_TURN_OFF_LED1()  HAL_TURN_OFF_LED1()
-//   89 #define SB_TURN_ON_LED1()   HAL_TURN_ON_LED1()
-//   90 #define SB_TOGGLE_LED1()    HAL_TOGGLE_LED1()
-//   91 #define SB_TURN_OFF_LED2()  HAL_TURN_OFF_LED2()
-//   92 #define SB_TURN_ON_LED2()   HAL_TURN_ON_LED2()
-//   93 #define SB_TOGGLE_LED2()    HAL_TOGGLE_LED2()
-//   94 #else
-//   95 #define SB_TURN_OFF_LED1()
-//   96 #define SB_TURN_ON_LED1()
-//   97 #define SB_TOGGLE_LED1()
-//   98 #define SB_TURN_OFF_LED2()
-//   99 #define SB_TURN_ON_LED2()
-//  100 #define SB_TOGGLE_LED2()
-//  101 #endif
-//  102 
-//  103 #if !defined ResetWasWatchDog
-//  104 #define ResetWasWatchDog ((SLEEPSTA & 0x18) == 0x10)
-//  105 #endif
-//  106 
-//  107 /* ------------------------------------------------------------------------------------------------
-//  108  *                                       Global Variables
-//  109  * ------------------------------------------------------------------------------------------------
-//  110  */
-//  111 
+//   55 #include "hal_dma.h"
+//   56 /* ------------------------------------------------------------------------------------------------
+//   57  *                                          Constants
+//   58  * ------------------------------------------------------------------------------------------------
+//   59  */
+//   60 
+//   61 /* Delay jump to valid RC code, waiting for a force boot or force run indication via the
+//   62  * physical transport or button press indication. Set to zero to jump immediately, this
+//   63  * necessitates the RC to invalidate checksum/shadow to force boot mode.
+//   64  */
+//   65 #if !defined SB_UART_DELAY
+//   66 #define SB_UART_DELAY  0x260000  // About 1 minute.
+//   67 #endif
+//   68 
+//   69 /* ------------------------------------------------------------------------------------------------
+//   70  *                                           Macros
+//   71  * ------------------------------------------------------------------------------------------------
+//   72  */
+//   73 
+//   74 #if HAL_KEY
+//   75 #define SB1_PRESS  (P0_1 != 0)
+//   76 #define SB2_PRESS  (P2_0 != 0)
+//   77 #else
+//   78 #define SB1_PRESS   0
+//   79 #define SB2_PRESS   0
+//   80 #endif
+//   81 
+//   82 #if HAL_LED
+//   83 #define SB_INIT_LEDS() st (  \ 
+//   84   HAL_TURN_OFF_LED1();  \ 
+//   85   LED1_DDR |= LED1_BV;  \ 
+//   86   HAL_TURN_OFF_LED2();  \ 
+//   87   LED2_DDR |= LED2_BV;  \ 
+//   88 )
+//   89 #define SB_TURN_OFF_LED1()  HAL_TURN_OFF_LED1()
+//   90 #define SB_TURN_ON_LED1()   HAL_TURN_ON_LED1()
+//   91 #define SB_TOGGLE_LED1()    HAL_TOGGLE_LED1()
+//   92 #define SB_TURN_OFF_LED2()  HAL_TURN_OFF_LED2()
+//   93 #define SB_TURN_ON_LED2()   HAL_TURN_ON_LED2()
+//   94 #define SB_TOGGLE_LED2()    HAL_TOGGLE_LED2()
+//   95 #else
+//   96 #define SB_TURN_OFF_LED1()
+//   97 #define SB_TURN_ON_LED1()
+//   98 #define SB_TOGGLE_LED1()
+//   99 #define SB_TURN_OFF_LED2()
+//  100 #define SB_TURN_ON_LED2()
+//  101 #define SB_TOGGLE_LED2()
+//  102 #endif
+//  103 
+//  104 #if !defined ResetWasWatchDog
+//  105 #define ResetWasWatchDog ((SLEEPSTA & 0x18) == 0x10)
+//  106 #endif
+//  107 
+//  108 /* ------------------------------------------------------------------------------------------------
+//  109  *                                       Global Variables
+//  110  * ------------------------------------------------------------------------------------------------
+//  111  */
+//  112 
 
         RSEG XDATA_Z:XDATA:NOROOT(0)
         DATA8
-//  112 halDMADesc_t dmaCh0;
+//  113 halDMADesc_t dmaCh0;
 dmaCh0:
         DS 8
         REQUIRE __INIT_XDATA_Z
-//  113 
-//  114 /* ------------------------------------------------------------------------------------------------
-//  115  *                                       Local Functions
-//  116  * ------------------------------------------------------------------------------------------------
-//  117  */
-//  118 
-//  119 static void sblExec(void);
-//  120 static void sblInit(void);
-//  121 static void sblJump(void);
-//  122 static void sblWait(void);
-//  123 static void vddWait(uint8 vdd);
-//  124 
-//  125 #include "_hal_uart_isr.c"
+//  114 
+//  115 /* ------------------------------------------------------------------------------------------------
+//  116  *                                       Local Functions
+//  117  * ------------------------------------------------------------------------------------------------
+//  118  */
+//  119 
+//  120 static void sblExec(void);
+//  121 static void sblInit(void);
+//  122 static void sblJump(void);
+//  123 static void sblWait(void);
+//  124 static void vddWait(uint8 vdd);
+//  125 
+//  126 #include "_hal_uart_isr.c"
 
         RSEG XDATA_Z:XDATA:NOROOT(0)
         DATA8
@@ -1007,31 +1008,31 @@ HalUARTPollISR:
           CFI DPL0 SameValue
         RET
           CFI EndBlock cfiBlock6
-//  126 
-//  127 /**************************************************************************************************
-//  128  * @fn          main
-//  129  *
-//  130  * @brief       C-code main functionality.
-//  131  *
-//  132  * input parameters
-//  133  *
-//  134  * None.
-//  135  *
-//  136  * output parameters
-//  137  *
-//  138  * None.
-//  139  *
-//  140  * @return      None.
-//  141  **************************************************************************************************
-//  142  */
+//  127 
+//  128 /**************************************************************************************************
+//  129  * @fn          main
+//  130  *
+//  131  * @brief       C-code main functionality.
+//  132  *
+//  133  * input parameters
+//  134  *
+//  135  * None.
+//  136  *
+//  137  * output parameters
+//  138  *
+//  139  * None.
+//  140  *
+//  141  * @return      None.
+//  142  **************************************************************************************************
+//  143  */
 
         RSEG NEAR_CODE:CODE:NOROOT(0)
-//  143 void main(void)
+//  144 void main(void)
 main:
           CFI Block cfiBlock7 Using cfiCommon2
           CFI Function main
         CODE
-//  144 {
+//  145 {
         FUNCALL main, vddWait
         LOCFRAME ISTACK, 0, STACK
         LOCFRAME PSTACK, 0, STACK
@@ -1187,11 +1188,11 @@ main:
         MOV     A,#-0x1
         LCALL   ?ALLOC_XSTACK8
           CFI CFA_XSP16 add(XSP16, 1)
-//  145   vddWait(VDD_MIN_RUN);
+//  146   vddWait(VDD_MIN_RUN);
         ; Setup parameters for call to function vddWait
         MOV     R1,#0x4a
         LCALL   vddWait
-//  146   HAL_BOARD_INIT();
+//  147   HAL_BOARD_INIT();
         ANL     0xbe,#0xfb
 ??main_0:
         MOV     A,0x9d
@@ -1219,32 +1220,39 @@ main:
         CLR     0x90.4
         ORL     0xfe,#0x10
         ORL     0x8f,#0x1
-//  147 
-//  148   // make sure the DMA channel is selected before we attempt to
-//  149   // to write anything to flash.
-//  150   sblInit();
+//  148 
+//  149   // make sure the DMA channel is selected before we attempt to
+//  150   // to write anything to flash.
+//  151   sblInit();
         ; Setup parameters for call to function sblInit
         LCALL   sblInit
-//  151   
-//  152   if (sbImgValid())
+//  152   
+//  153   // if a valid image exist
+//  154   if (sbImgValid())
         ; Setup parameters for call to function sbImgValid
         LCALL   sbImgValid
         MOV     A,R1
         JNZ     $+5
         LJMP    ??main_3
-//  153   {
-//  154     if ((SB_UART_DELAY == 0) || ResetWasWatchDog)
+//  155   {
+//  156     // if (delay set as null) or (previous reset is a WTD reset)
+//  157     if ((SB_UART_DELAY == 0) || ResetWasWatchDog)
         MOV     A,0x9d
         ANL     A,#0x18
         XRL     A,#0x10
         JNZ     ??main_4
-//  155     {
-//  156       sblJump();
+//  158     {
+//  159       // goes into system
+//  160       sblJump();
         ; Setup parameters for call to function sblJump
         LCALL   sblJump
-//  157     }
-//  158 
-//  159     sblWait();
+//  161     }
+//  162 
+//  163     // otherwise, make the decision whether execute SBL mode
+//  164     // 1. Receiving SB_FORCE_BOOT/SB_FORCE_RUN command from UART
+//  165     // 2. SB1_PRESS - SBL execute
+//  166     // 3. SB2_PRESS - RUN system
+//  167     sblWait();
 ??main_4:
         MOV     ?V4,#0x0
         MOV     ?V5,#0x0
@@ -1310,14 +1318,16 @@ main:
 ??main_8:
         CLR     0x90.0
         CLR     0x90.1
-//  160   }
-//  161 
-//  162   vddWait(VDD_MIN_NV);
+//  168   }
+//  169 
+//  170   // if the code goes here, SBL will execute soon
+//  171   vddWait(VDD_MIN_NV);
 ??main_3:
         ; Setup parameters for call to function vddWait
         MOV     R1,#0x4e
         LCALL   vddWait
-//  163   sblExec();
+//  172   // execute
+//  173   sblExec();
         MOV     ?V4,#0x0
         MOV     ?V5,#0x0
         MOV     ?V6,#0x0
@@ -1380,8 +1390,9 @@ main:
         REQUIRE WDCTL
         REQUIRE _A_P0
         REQUIRE _A_P2
-//  164   HAL_SYSTEM_RESET();
-//  165 }
+//  174   // reset after programme receiving
+//  175   HAL_SYSTEM_RESET();
+//  176 }
 
         RSEG NEAR_CODE:CODE:NOROOT(0)
 ?Subroutine2:
@@ -1417,73 +1428,73 @@ main:
           CFI EndBlock cfiCond8
           CFI EndBlock cfiCond9
           CFI EndBlock cfiPicker10
-//  166 
-//  167 /**************************************************************************************************
-//  168  * @fn          sblExec
-//  169  *
-//  170  * @brief       Infinite SBL execute loop that jumps upon receiving a code enable.
-//  171  *
-//  172  * input parameters
-//  173  *
-//  174  * None.
-//  175  *
-//  176  * output parameters
-//  177  *
-//  178  * None.
-//  179  *
-//  180  * @return      None.
-//  181  **************************************************************************************************
-//  182  */
-//  183 static void sblExec(void)
-//  184 {
-//  185   uint32 dlyCnt = 0;
-//  186 
-//  187   while (1)
-//  188   {
-//  189     HalUARTPollISR();
-//  190 
-//  191     if (sbExec() && sbImgValid())
-//  192     {
-//  193       SB_TURN_ON_LED1();
-//  194       SB_TURN_ON_LED2();
-//  195       // Delay to allow the SB_ENABLE_CMD response to be flushed.
-//  196       for (dlyCnt = 0; dlyCnt < 0x40000; dlyCnt++)
-//  197       {
-//  198         HalUARTPollISR();
-//  199       }
-//  200 
-//  201       sblJump();
-//  202     }
-//  203     else if (dlyCnt++ & 0x4000)
-//  204     {
-//  205       SB_TOGGLE_LED1();
-//  206     }
-//  207   }
-//  208 }
-//  209 
-//  210 /**************************************************************************************************
-//  211  * @fn          sblInit
-//  212  *
-//  213  * @brief       SBL initialization.
-//  214  *
-//  215  * input parameters
-//  216  *
-//  217  * None.
-//  218  *
-//  219  * output parameters
-//  220  *
-//  221  * None.
-//  222  *
-//  223  * @return      None.
-//  224  */
+//  177 
+//  178 /**************************************************************************************************
+//  179  * @fn          sblExec
+//  180  *
+//  181  * @brief       Infinite SBL execute loop that jumps upon receiving a code enable.
+//  182  *
+//  183  * input parameters
+//  184  *
+//  185  * None.
+//  186  *
+//  187  * output parameters
+//  188  *
+//  189  * None.
+//  190  *
+//  191  * @return      None.
+//  192  **************************************************************************************************
+//  193  */
+//  194 static void sblExec(void)
+//  195 {
+//  196   uint32 dlyCnt = 0;
+//  197 
+//  198   while (1)
+//  199   {
+//  200     HalUARTPollISR();
+//  201 
+//  202     if (sbExec() && sbImgValid())
+//  203     {
+//  204       SB_TURN_ON_LED1();
+//  205       SB_TURN_ON_LED2();
+//  206       // Delay to allow the SB_ENABLE_CMD response to be flushed.
+//  207       for (dlyCnt = 0; dlyCnt < 0x40000; dlyCnt++)
+//  208       {
+//  209         HalUARTPollISR();
+//  210       }
+//  211 
+//  212       sblJump();
+//  213     }
+//  214     else if (dlyCnt++ & 0x4000)
+//  215     {
+//  216       SB_TOGGLE_LED1();
+//  217     }
+//  218   }
+//  219 }
+//  220 
+//  221 /**************************************************************************************************
+//  222  * @fn          sblInit
+//  223  *
+//  224  * @brief       SBL initialization.
+//  225  *
+//  226  * input parameters
+//  227  *
+//  228  * None.
+//  229  *
+//  230  * output parameters
+//  231  *
+//  232  * None.
+//  233  *
+//  234  * @return      None.
+//  235  */
 
         RSEG NEAR_CODE:CODE:NOROOT(0)
-//  225 static void sblInit(void)
+//  236 static void sblInit(void)
 sblInit:
           CFI Block cfiBlock11 Using cfiCommon0
           CFI Function sblInit
         CODE
-//  226 {
+//  237 {
         PUSH    DPL
           CFI DPL0 Frame(CFA_SP, 3)
           CFI CFA_SP SP+-3
@@ -1492,16 +1503,16 @@ sblInit:
           CFI CFA_SP SP+-4
         ; Saved register size: 2
         ; Auto size: 0
-//  227   halUARTCfg_t uartConfig;
-//  228   /* This is in place of calling HalDmaInit() which would require init of the other 4 DMA
-//  229    * descriptors in addition to just Channel 0.
-//  230    */
-//  231   HAL_DMA_SET_ADDR_DESC0(&dmaCh0);
+//  238   halUARTCfg_t uartConfig;
+//  239   /* This is in place of calling HalDmaInit() which would require init of the other 4 DMA
+//  240    * descriptors in addition to just Channel 0.
+//  241    */
+//  242   HAL_DMA_SET_ADDR_DESC0(&dmaCh0);
         MOV     A,#(dmaCh0 >> 8) & 0xff
         MOV     0xd5,A
         MOV     0xd4,#dmaCh0 & 0xff
-//  232 
-//  233   HalUARTInitISR();
+//  243 
+//  244   HalUARTInitISR();
         ANL     0xff,#0x3f
         MOV     0xff,0xff
         ANL     0xf1,#0xfe
@@ -1509,16 +1520,16 @@ sblInit:
         ANL     0xf2,#0xf3
         MOV     0x86,#-0x80
         MOV     0xc4,#-0x80
-//  234   uartConfig.configured           = TRUE;
-//  235   uartConfig.baudRate             = HAL_UART_BR_115200;
-//  236   uartConfig.flowControl          = FALSE;
-//  237   uartConfig.flowControlThreshold = 0;  // CC2530 by #define - see hal_board_cfg.h
-//  238   uartConfig.rx.maxBufSize        = 0;  // CC2530 by #define - see hal_board_cfg.h
-//  239   uartConfig.tx.maxBufSize        = 0;  // CC2530 by #define - see hal_board_cfg.h
-//  240   uartConfig.idleTimeout          = 0;  // CC2530 by #define - see hal_board_cfg.h
-//  241   uartConfig.intEnable            = TRUE;
-//  242   uartConfig.callBackFunc         = NULL;
-//  243   HalUARTOpenISR(&uartConfig);
+//  245   uartConfig.configured           = TRUE;
+//  246   uartConfig.baudRate             = HAL_UART_BR_115200;
+//  247   uartConfig.flowControl          = FALSE;
+//  248   uartConfig.flowControlThreshold = 0;  // CC2530 by #define - see hal_board_cfg.h
+//  249   uartConfig.rx.maxBufSize        = 0;  // CC2530 by #define - see hal_board_cfg.h
+//  250   uartConfig.tx.maxBufSize        = 0;  // CC2530 by #define - see hal_board_cfg.h
+//  251   uartConfig.idleTimeout          = 0;  // CC2530 by #define - see hal_board_cfg.h
+//  252   uartConfig.intEnable            = TRUE;
+//  253   uartConfig.callBackFunc         = NULL;
+//  254   HalUARTOpenISR(&uartConfig);
         MOV     DPTR,#isrCfg + 515
         CLR     A
         MOVX    @DPTR,A
@@ -1528,10 +1539,10 @@ sblInit:
         MOV     0xc5,#0xb
         MOV     0xc4,#0x2
         ORL     0x86,#0x40
-//  244 
-//  245   SB_INIT_LEDS();
+//  255 
+//  256   SB_INIT_LEDS();
         LCALL   ?Subroutine3
-//  246 }
+//  257 }
 ??CrossCallReturnLabel_5:
         LJMP    ?Subroutine0
           CFI EndBlock cfiBlock11
@@ -1572,49 +1583,49 @@ sblInit:
           CFI EndBlock cfiCond12
           CFI EndBlock cfiCond13
           CFI EndBlock cfiPicker14
-//  247 
-//  248 /**************************************************************************************************
-//  249  * @fn          sblJump
-//  250  *
-//  251  * @brief       Execute a simple long jump from non-banked SBL code to non-banked RC code space.
-//  252  *
-//  253  * input parameters
-//  254  *
-//  255  * None.
-//  256  *
-//  257  * output parameters
-//  258  *
-//  259  * None.
-//  260  *
-//  261  * @return      None.
-//  262  */
+//  258 
+//  259 /**************************************************************************************************
+//  260  * @fn          sblJump
+//  261  *
+//  262  * @brief       Execute a simple long jump from non-banked SBL code to non-banked RC code space.
+//  263  *
+//  264  * input parameters
+//  265  *
+//  266  * None.
+//  267  *
+//  268  * output parameters
+//  269  *
+//  270  * None.
+//  271  *
+//  272  * @return      None.
+//  273  */
 
         RSEG NEAR_CODE:CODE:NOROOT(0)
-//  263 static void sblJump(void)
+//  274 static void sblJump(void)
 sblJump:
           CFI Block cfiBlock15 Using cfiCommon0
           CFI Function sblJump
         CODE
-//  264 {
+//  275 {
         ; Saved register size: 0
         ; Auto size: 0
-//  265   SB_TURN_ON_LED1();
+//  276   SB_TURN_ON_LED1();
         SETB    0x90.0
-//  266   SB_TURN_ON_LED2();
+//  277   SB_TURN_ON_LED2();
         SETB    0x90.1
-//  267   while (SB1_PRESS || SB2_PRESS);
+//  278   while (SB1_PRESS || SB2_PRESS);
 ??sblJump_0:
         MOV     C,0x80.1
         JC      ??sblJump_0
         MOV     C,0xa0.0
         JC      ??sblJump_0
-//  268   SB_TURN_OFF_LED1();
+//  279   SB_TURN_OFF_LED1();
         CLR     0x90.0
-//  269   SB_TURN_OFF_LED2();
+//  280   SB_TURN_OFF_LED2();
         CLR     0x90.1
-//  270   asm("LJMP 0x2000\n");  // Immediate jump to run-code.
+//  281   asm("LJMP 0x2000\n");  // Immediate jump to run-code.
         LJMP 0x2000
-//  271   HAL_SYSTEM_RESET();
+//  282   HAL_SYSTEM_RESET();
         CLR     0xa8.7
         MOV     0xc9,#-0x55
         MOV     0xc9,#0x5b
@@ -1626,121 +1637,121 @@ sblJump:
         REQUIRE _A_P2
         REQUIRE _A_IEN0
         REQUIRE WDCTL
-//  272 }
-//  273 
-//  274 /**************************************************************************************************
-//  275  * @fn          sblWait
-//  276  *
-//  277  * @brief       A timed-out wait loop that exits early upon receiving a force code/sbl byte.
-//  278  *
-//  279  * input parameters
-//  280  *
-//  281  * None.
-//  282  *
-//  283  * output parameters
-//  284  *
-//  285  * None.
-//  286  *
-//  287  * @return      None.
-//  288  **************************************************************************************************
-//  289  */
-//  290 static void sblWait(void)
-//  291 {
-//  292   uint32 dlyCnt = SB_UART_DELAY;
-//  293 
-//  294   while (1)
-//  295   {
-//  296     uint8 ch;
-//  297 
-//  298     HalUARTPollISR();
-//  299     if (HalUARTReadISR(&ch, 1))
-//  300     {
-//  301       if (ch == SB_FORCE_BOOT)
-//  302       {
-//  303         break;
-//  304       }
-//  305       else if (ch == SB_FORCE_RUN)
-//  306       {
-//  307         dlyCnt = 0;
-//  308       }
-//  309     }
-//  310 
-//  311     if (SB1_PRESS)
-//  312     {
-//  313       break;
-//  314     }
-//  315 
-//  316     if (SB2_PRESS || (dlyCnt-- == 0))
-//  317     {
-//  318       sblJump();
-//  319     }
-//  320 
-//  321     // RR-xing LED display while waiting.
-//  322     if (dlyCnt & 0x2000)
+//  283 }
+//  284 
+//  285 /**************************************************************************************************
+//  286  * @fn          sblWait
+//  287  *
+//  288  * @brief       A timed-out wait loop that exits early upon receiving a force code/sbl byte.
+//  289  *
+//  290  * input parameters
+//  291  *
+//  292  * None.
+//  293  *
+//  294  * output parameters
+//  295  *
+//  296  * None.
+//  297  *
+//  298  * @return      None.
+//  299  **************************************************************************************************
+//  300  */
+//  301 static void sblWait(void)
+//  302 {
+//  303   uint32 dlyCnt = SB_UART_DELAY;
+//  304 
+//  305   while (1)
+//  306   {
+//  307     uint8 ch;
+//  308 
+//  309     HalUARTPollISR();
+//  310     if (HalUARTReadISR(&ch, 1))
+//  311     {
+//  312       if (ch == SB_FORCE_BOOT)
+//  313       {
+//  314         break;
+//  315       }
+//  316       else if (ch == SB_FORCE_RUN)
+//  317       {
+//  318         dlyCnt = 0;
+//  319       }
+//  320     }
+//  321 
+//  322     if (SB1_PRESS)
 //  323     {
-//  324       SB_TURN_OFF_LED2();
-//  325       SB_TURN_ON_LED1();
-//  326     }
-//  327     else
+//  324       break;
+//  325     }
+//  326 
+//  327     if (SB2_PRESS || (dlyCnt-- == 0))
 //  328     {
-//  329       SB_TURN_OFF_LED1();
-//  330       SB_TURN_ON_LED2();
-//  331     }
-//  332   }
-//  333 
-//  334   SB_TURN_OFF_LED1();
-//  335   SB_TURN_OFF_LED2();
-//  336 }
-//  337 
-//  338 /**************************************************************************************************
-//  339  * @fn          vddWait
-//  340  *
-//  341  * @brief       Loop waiting for 16 reads of the Vdd over the requested limit.
-//  342  *
-//  343  * input parameters
-//  344  *
-//  345  * @param       vdd - Vdd level to wait for.
-//  346  *
-//  347  * output parameters
-//  348  *
-//  349  * None.
-//  350  *
-//  351  * @return      None.
-//  352  **************************************************************************************************
-//  353  */
+//  329       sblJump();
+//  330     }
+//  331 
+//  332     // RR-xing LED display while waiting.
+//  333     if (dlyCnt & 0x2000)
+//  334     {
+//  335       SB_TURN_OFF_LED2();
+//  336       SB_TURN_ON_LED1();
+//  337     }
+//  338     else
+//  339     {
+//  340       SB_TURN_OFF_LED1();
+//  341       SB_TURN_ON_LED2();
+//  342     }
+//  343   }
+//  344 
+//  345   SB_TURN_OFF_LED1();
+//  346   SB_TURN_OFF_LED2();
+//  347 }
+//  348 
+//  349 /**************************************************************************************************
+//  350  * @fn          vddWait
+//  351  *
+//  352  * @brief       Loop waiting for 16 reads of the Vdd over the requested limit.
+//  353  *
+//  354  * input parameters
+//  355  *
+//  356  * @param       vdd - Vdd level to wait for.
+//  357  *
+//  358  * output parameters
+//  359  *
+//  360  * None.
+//  361  *
+//  362  * @return      None.
+//  363  **************************************************************************************************
+//  364  */
 
         RSEG NEAR_CODE:CODE:NOROOT(0)
-//  354 static void vddWait(uint8 vdd)
+//  365 static void vddWait(uint8 vdd)
 vddWait:
           CFI Block cfiBlock16 Using cfiCommon0
           CFI Function vddWait
         CODE
-//  355 {
+//  366 {
         ; Saved register size: 0
         ; Auto size: 0
-//  356   uint8 cnt = 16;
+//  367   uint8 cnt = 16;
         MOV     R0,#0x10
-//  357 
-//  358   do {
-//  359     do {
-//  360       ADCCON3 = 0x0F;
+//  368 
+//  369   do {
+//  370     do {
+//  371       ADCCON3 = 0x0F;
 ??vddWait_0:
         MOV     0xb6,#0xf
-//  361       while (!(ADCCON1 & 0x80));
+//  372       while (!(ADCCON1 & 0x80));
 ??vddWait_1:
         MOV     A,0xb4
         MOV     C,0xE0 /* A   */.7
         JNC     ??vddWait_1
-//  362     } while (ADCH < vdd);
+//  373     } while (ADCH < vdd);
         MOV     A,0xbb
         CLR     C
         SUBB    A,R1
         JC      ??vddWait_0
-//  363   } while (--cnt);
+//  374   } while (--cnt);
         DEC     R0
         MOV     A,R0
         JNZ     ??vddWait_0
-//  364 }
+//  375 }
         RET
           CFI EndBlock cfiBlock16
         REQUIRE ADCCON3
@@ -1784,9 +1795,9 @@ __Constant_40000:
         DD 262144
 
         END
-//  365 
-//  366 /**************************************************************************************************
-//  367 */
+//  376 
+//  377 /**************************************************************************************************
+//  378 */
 // 
 // 753 bytes in segment NEAR_CODE
 //  27 bytes in segment SFR_AN

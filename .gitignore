@@ -5,6 +5,12 @@
 *.r51
 *.c51
 *.s
+*.map
+*.lst
+*.xcl
+*.d51
+*.wsdt
+*.dni
 
 *.pydevproject
 .project
