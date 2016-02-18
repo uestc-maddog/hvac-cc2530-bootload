@@ -62,7 +62,8 @@
  * necessitates the RC to invalidate checksum/shadow to force boot mode.
  */
 #if !defined SB_UART_DELAY
-#define SB_UART_DELAY  0x260000  // About 1 minute.
+// #define SB_UART_DELAY  0x260000  // About 1 minute.
+#define SB_UART_DELAY  0x065554  // About 10 seconds.
 #endif
 
 /* ------------------------------------------------------------------------------------------------

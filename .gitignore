@@ -2,8 +2,12 @@
 ## Eclipse
 #################
 
+*.wspos
+*.dbgdt
 *.r51
 *.c51
+*.s51
+*.hex
 *.s
 *.map
 *.lst
