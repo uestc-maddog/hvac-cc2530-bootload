@@ -6,119 +6,50 @@
   <configuration>
     <name>CC2530 Boot Loader</name>
     <outputs>
-      <file>$PROJ_DIR$\CC2530BL\Obj\sb_main.pbi</file>
-      <file>$PROJ_DIR$\CC2530BL\List\sb_main.s51</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\Components\hal\include\hal_board.h</file>
+      <file>$PROJ_DIR$\CC2530BL\List\sb_exec.s51</file>
+      <file>$PROJ_DIR$\CC2530BL\Obj\interrupt_stubs.r51</file>
       <file>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2530EB\hal_types.h</file>
+      <file>$PROJ_DIR$\CC2530BL\List\Boot.map</file>
+      <file>$PROJ_DIR$\CC2530BL\Obj\sb_exec.pbi</file>
       <file>$PROJ_DIR$\..\..\..\..\..\Components\hal\include\hal_adc.h</file>
-      <file>$PROJ_DIR$\..\Source\sb_exec.c</file>
-      <file>$TOOLKIT_DIR$\inc\ioCC2530.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2530EB\hal_dma.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\..\Components\hal\include\hal_flash.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\..\Components\hal\include\hal_uart.h</file>
+      <file>$PROJ_DIR$\CC2530BL\Exe\CC2530SB.hex</file>
+      <file>$PROJ_DIR$\CC2530BL\Exe\Boot.d51</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\Components\hal\include\hal_assert.h</file>
+      <file>$PROJ_DIR$\CC2530BL\Obj\hal_flash.pbi</file>
       <file>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2530EB\hal_mcu.h</file>
+      <file>$TOOLKIT_DIR$\inc\ioCC2530.h</file>
+      <file>$PROJ_DIR$\CC2530BL\Obj\Boot.pbd</file>
+      <file>$PROJ_DIR$\CC2530BL\Obj\sb_main.r51</file>
+      <file>$PROJ_DIR$\CC2530BL\Obj\hal_flash.r51</file>
+      <file>$TOOLKIT_DIR$\lib\clib\cl-pli-nlxd-1e16x01.r51</file>
+      <file>$PROJ_DIR$\source\_hal_uart_isr.c</file>
+      <file>$PROJ_DIR$\CC2530BL\List\sb_main.s51</file>
+      <file>$PROJ_DIR$\CC2530BL\Obj\sb_main.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2530EB\hal_dma.h</file>
+      <file>$PROJ_DIR$\source\interrupt_stubs.s51</file>
+      <file>$PROJ_DIR$\CC2530BL\List\hal_flash.s51</file>
+      <file>$PROJ_DIR$\..\..\..\Tools\CC2530DB\sb-boot.xcl</file>
+      <file>$PROJ_DIR$\CC2530BL\List\sb_exec.lst</file>
+      <file>$PROJ_DIR$\CC2530BL\List\sb_main.lst</file>
+      <file>$PROJ_DIR$\CC2530BL\List\hal_flash.lst</file>
+      <file>$PROJ_DIR$\CC2530BL\Obj\sb_exec.r51</file>
+      <file>$PROJ_DIR$\..\Source\sb_exec.c</file>
       <file>$PROJ_DIR$\source\sb_main.c</file>
       <file>$PROJ_DIR$\..\..\..\..\..\Components\hal\include\hal_defs.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\Components\hal\include\hal_uart.h</file>
       <file>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2530EB\hal_flash.c</file>
-      <file>$PROJ_DIR$\source\sb_main.h</file>
-      <file>$PROJ_DIR$\..\..\..\Tools\CC2530DB\sb-boot.xcl</file>
       <file>$PROJ_DIR$\..\Source\sb_exec.h</file>
-      <file>$TOOLKIT_DIR$\lib\clib\cl-pli-nlxd-1e16x01.r51</file>
-      <file>$PROJ_DIR$\source\interrupt_stubs.s51</file>
+      <file>$PROJ_DIR$\..\..\..\..\..\Components\hal\include\hal_flash.h</file>
+      <file>$PROJ_DIR$\source\sb_main.h</file>
       <file>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2530EB\hal_board_cfg.h</file>
-      <file>$PROJ_DIR$\CC2530BL\Exe\Boot.d51</file>
-      <file>$PROJ_DIR$\CC2530BL\List\Boot.map</file>
-      <file>$PROJ_DIR$\CC2530BL\List\sb_exec.lst</file>
-      <file>$PROJ_DIR$\CC2530BL\List\hal_flash.lst</file>
-      <file>$PROJ_DIR$\CC2530BL\List\hal_flash.s51</file>
-      <file>$PROJ_DIR$\CC2530BL\Obj\interrupt_stubs.r51</file>
-      <file>$PROJ_DIR$\CC2530BL\Obj\hal_flash.r51</file>
-      <file>$PROJ_DIR$\CC2530BL\Obj\sb_main.r51</file>
-      <file>$PROJ_DIR$\CC2530BL\Exe\CC2530SB.hex</file>
-      <file>$PROJ_DIR$\CC2530BL\Obj\hal_flash.pbi</file>
-      <file>$PROJ_DIR$\CC2530BL\Obj\Boot.pbd</file>
-      <file>$PROJ_DIR$\CC2530BL\List\sb_exec.s51</file>
-      <file>$PROJ_DIR$\..\..\..\..\..\Components\hal\include\hal_board.h</file>
-      <file>$PROJ_DIR$\..\..\..\..\..\Components\hal\include\hal_assert.h</file>
-      <file>$PROJ_DIR$\CC2530BL\Obj\sb_exec.r51</file>
-      <file>$PROJ_DIR$\CC2530BL\List\sb_main.lst</file>
-      <file>$PROJ_DIR$\CC2530BL\Obj\sb_exec.pbi</file>
-      <file>$PROJ_DIR$\source\_hal_uart_isr.c</file>
     </outputs>
     <file>
-      <name>$PROJ_DIR$\..\Source\sb_exec.c</name>
+      <name>[ROOT_NODE]</name>
       <outputs>
         <tool>
-          <name>ICC8051</name>
-          <file> 30 21 33</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 35</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICC8051</name>
-          <file> 18 9 11 2 5 7 31 15 13</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 13 11 31 2 5 7 15 9 18</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\source\sb_main.c</name>
-      <outputs>
-        <tool>
-          <name>ICC8051</name>
-          <file> 1 34 26</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 0</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICC8051</name>
-          <file> 18 9 11 2 5 3 31 6 7 15 13 36 32 8</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 11 2 5 6 13 3 7 15 36 9 31 32 8 18</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2530EB\hal_flash.c</name>
-      <outputs>
-        <tool>
-          <name>ICC8051</name>
-          <file> 23 22 25</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 28</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICC8051</name>
-          <file> 18 9 11 2 5 6 31 7</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 9 2 7 18 6 11 5 31</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\source\interrupt_stubs.s51</name>
-      <outputs>
-        <tool>
-          <name>A8051</name>
-          <file> 24</file>
+          <name>XLINK</name>
+          <file> 8 4 7</file>
         </tool>
       </outputs>
     </file>
@@ -127,24 +58,93 @@
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 20 27</file>
+          <file> 4 7</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>XLINK</name>
-          <file> 14 25 24 33 26 16</file>
+          <file> 23 15 2 27 14 16</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>[ROOT_NODE]</name>
+      <name>$PROJ_DIR$\source\interrupt_stubs.s51</name>
       <outputs>
         <tool>
-          <name>XLINK</name>
-          <file> 19 20 27</file>
+          <name>A8051</name>
+          <file> 2</file>
         </tool>
       </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\sb_exec.c</name>
+      <outputs>
+        <tool>
+          <name>ICC8051</name>
+          <file> 1 24 27</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICC8051</name>
+          <file> 36 11 30 3 12 34 0 33 35</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 35 30 0 3 12 34 33 11 36</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\sb_main.c</name>
+      <outputs>
+        <tool>
+          <name>ICC8051</name>
+          <file> 18 25 14</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 19</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICC8051</name>
+          <file> 36 11 30 3 12 6 0 20 34 33 35 17 9 31</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 11 3 30 20 35 6 34 33 17 12 0 9 31 36</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2530EB\hal_flash.c</name>
+      <outputs>
+        <tool>
+          <name>ICC8051</name>
+          <file> 22 26 15</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 10</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICC8051</name>
+          <file> 36 11 30 3 12 20 0 34</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 11 3 34 36 20 30 12 0</file>
+        </tool>
+      </inputs>
     </file>
   </configuration>
 </project>

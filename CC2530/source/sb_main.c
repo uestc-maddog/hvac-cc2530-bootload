@@ -63,7 +63,7 @@
  */
 #if !defined SB_UART_DELAY
 // #define SB_UART_DELAY  0x260000  // About 1 minute.
-#define SB_UART_DELAY  0x065554  // About 10 seconds.
+#define SB_UART_DELAY  0x045554  // About 3 seconds.
 #endif
 
 /* ------------------------------------------------------------------------------------------------
@@ -154,7 +154,7 @@ void main(void)
   if (sbImgValid())
   {
     // if (delay set as null) or (previous reset is a WTD reset)
-    if ((SB_UART_DELAY == 0) || ResetWasWatchDog)
+    if (SB_UART_DELAY == 0)
     {
       // goes into system
       sblJump();
