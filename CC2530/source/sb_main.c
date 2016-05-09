@@ -194,7 +194,8 @@ void main(void)
 static void sblExec(void)
 {
   uint32 dlyCnt = 0;
-
+  uint8 temp;
+  
   while (1)
   {
     HalUARTPollISR();
@@ -208,7 +209,15 @@ static void sblExec(void)
       {
         HalUARTPollISR();
       }
-
+      
+      // reset NV page
+      /*for(temp = 0; temp<6; temp++)
+      {
+        // HAL_NV_PAGE_CNT = 6, HAL_NV_PAGE_END = 126.
+        // Therefore the NV page start from 121 to 126
+        HalFlashErase(121 + temp);  
+      }*/
+      
       sblJump();
     }
     else if (dlyCnt++ & 0x4000)
