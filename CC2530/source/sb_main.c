@@ -143,6 +143,8 @@ static void vddWait(uint8 vdd);
  */
 void main(void)
 {
+  uint8 temp;
+  
   vddWait(VDD_MIN_RUN);
   HAL_BOARD_INIT();
 
@@ -168,6 +170,14 @@ void main(void)
   }
 
   // if the code goes here, SBL will execute soon
+  // reset NV page
+  for(temp = 0; temp<6; temp++)
+  {
+    // HAL_NV_PAGE_CNT = 6, HAL_NV_PAGE_END = 126.
+    // Therefore the NV page start from 121 to 126
+    HalFlashErase(121 + temp);  
+  }
+  
   vddWait(VDD_MIN_NV);
   // execute
   sblExec();
@@ -194,7 +204,6 @@ void main(void)
 static void sblExec(void)
 {
   uint32 dlyCnt = 0;
-  uint8 temp;
   
   while (1)
   {
@@ -209,14 +218,6 @@ static void sblExec(void)
       {
         HalUARTPollISR();
       }
-      
-      // reset NV page
-      /*for(temp = 0; temp<6; temp++)
-      {
-        // HAL_NV_PAGE_CNT = 6, HAL_NV_PAGE_END = 126.
-        // Therefore the NV page start from 121 to 126
-        HalFlashErase(121 + temp);  
-      }*/
       
       sblJump();
     }
